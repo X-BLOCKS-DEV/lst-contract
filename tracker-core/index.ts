@@ -94,6 +94,25 @@ export async function upsertDelegated(
     .run();
 }
 
+/**
+ * Refresh the materialized nav_latest serving table for a chain from the
+ * v_rate_latest_aligned view. Call after a tracker run. Output is identical to
+ * the view, so lst-nav-api can read nav_latest (with a view fallback) without
+ * changing the /latest response. Additive — no-op until migration 0006 applied.
+ */
+export async function refreshNavLatest(db: D1Database, chain: string): Promise<void> {
+  await db
+    .prepare(
+      `INSERT OR REPLACE INTO nav_latest
+         (chain, mint, slot, delegated_ts, supply_ts, delegated_lamports, token_supply_lamports, rate_text)
+       SELECT chain, mint, slot, delegated_ts, supply_ts, delegated_lamports, token_supply_lamports, rate_text
+       FROM v_rate_latest_aligned
+       WHERE chain = ?1`,
+    )
+    .bind(chain)
+    .run();
+}
+
 /** Run handler over items with a bounded number of concurrent workers. */
 export async function mapWithConcurrency<T>(
   items: T[],
