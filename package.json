@@ -1,0 +1,22 @@
+{
+  "name": "lst-contract",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Canonical D1 schema, shared types/zod, and chain-agnostic tracker-core for the bclab LST NAV stack. Consumed as source via git submodule.",
+  "exports": {
+    "./contract": "./contract/index.ts",
+    "./contract/zod": "./contract/zod.ts",
+    "./tracker-core": "./tracker-core/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "zod": "^4.1.13"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250109.0",
+    "typescript": "^5.4.5"
+  }
+}
