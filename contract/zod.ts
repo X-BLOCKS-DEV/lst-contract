@@ -33,3 +33,22 @@ export const navHistoryPointSchema = z.object({
   rate: z.coerce.number(),
 });
 export type NavHistoryPoint = z.infer<typeof navHistoryPointSchema>;
+
+export const priceLatestSchema = z.object({
+  symbol: z.string(),
+  ts: z.coerce.number(),
+  price_jpy: z.coerce.number(),
+  pct_1h: z.number().nullable().optional(),
+  pct_24h: z.number().nullable().optional(),
+  pct_7d: z.number().nullable().optional(),
+  pct_30d: z.number().nullable().optional(),
+  source: z.string().optional(),
+});
+export type PriceLatest = z.infer<typeof priceLatestSchema>;
+
+export const priceHistoryPointSchema = z.object({
+  symbol: z.string(),
+  ts: z.coerce.number(),
+  price_jpy: z.coerce.number(),
+});
+export type PriceHistoryPoint = z.infer<typeof priceHistoryPointSchema>;
