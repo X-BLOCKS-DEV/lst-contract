@@ -8,7 +8,7 @@ Consumed **as source** via git submodule — no build/publish step. Workers
 
 ## Layout
 - `migrations/` — **canonical** D1 schema for the shared `lst_nav` database
-  (0001–0005). This is the source of truth; trackers/api consume it. Migration
+  (0001–0007, 0009). This is the source of truth; trackers/api consume it. Migration
   application stays on a single pipeline (see ownership note below).
 - `contract/` — plain-TS contract (no zod): `chain.ts` (`Chain`, `parseChain`,
   `getAmountUnit`, `ErrorBody`), `step.ts` (`parseStep`), `d1-rows.ts`,

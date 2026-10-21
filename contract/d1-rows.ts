@@ -42,3 +42,25 @@ export interface RateLatestRow {
   token_supply_lamports: number | string;
   rate_text: string;
 }
+
+/** price_coins row (migration 0009). */
+export interface PriceCoinRow {
+  symbol: string;
+  legacy_coin_id: number | null;
+  cmc_id: number;
+  coingecko_id: string;
+  slug: string;
+  image_url: string;
+}
+
+/** price_quotes row (migration 0009). ts is epoch ms. */
+export interface PriceQuoteRow {
+  symbol: string;
+  ts: number;
+  price_jpy: number;
+  pct_1h: number | null;
+  pct_24h: number | null;
+  pct_7d: number | null;
+  pct_30d: number | null;
+  source: string;
+}
