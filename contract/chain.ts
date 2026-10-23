@@ -3,11 +3,11 @@
 // and lst-folio (chainSchema). Plain TS only — no zod here so the Worker API
 // can import it without pulling a runtime dependency.
 
-export type Chain = 'sol' | 'sui';
+export type Chain = 'sol' | 'sui' | 'eth';
 
-export const SUPPORTED_CHAINS: readonly Chain[] = ['sol', 'sui'] as const;
+export const SUPPORTED_CHAINS: readonly Chain[] = ['sol', 'sui', 'eth'] as const;
 
-export type AmountUnit = 'lamports' | 'mist';
+export type AmountUnit = 'lamports' | 'mist' | 'gwei';
 
 export type ErrorCode = 'INVALID_PARAM' | 'NOT_FOUND' | 'INTERNAL_ERROR';
 
@@ -19,10 +19,17 @@ export interface ErrorBody {
 /** Returns the normalized chain, or null when invalid. Defaults to 'sol'. */
 export function parseChain(value: string | null | undefined): Chain | null {
   const chain = (value ?? 'sol').toLowerCase();
-  return chain === 'sol' || chain === 'sui' ? chain : null;
+  return chain === 'sol' || chain === 'sui' || chain === 'eth' ? (chain as Chain) : null;
 }
 
-/** Base unit per chain: Solana lamports (10^9), Sui mist (10^9). */
+/**
+ * Base unit per chain: Solana lamports (10^9), Sui mist (10^9). Ethereum
+ * snapshots are stored in gwei (10^9), NOT wei: wstETH's wei-denominated
+ * supply (~3.7e24) overflows SQLite's 64-bit INTEGER, so the eth tracker
+ * scales by 10^9 (see migrations/0010). rate = backing/supply is unit-free.
+ */
 export function getAmountUnit(chain: string): AmountUnit {
-  return chain === 'sui' ? 'mist' : 'lamports';
+  if (chain === 'sui') return 'mist';
+  if (chain === 'eth') return 'gwei';
+  return 'lamports';
 }
