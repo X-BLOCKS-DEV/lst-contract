@@ -5,7 +5,7 @@
 
 import { z } from 'zod';
 
-export const chainSchema = z.enum(['sol', 'sui']);
+export const chainSchema = z.enum(['sol', 'sui', 'eth']);
 export type Chain = z.infer<typeof chainSchema>;
 
 export const navRateSchema = z.object({
